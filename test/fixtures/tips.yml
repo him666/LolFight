@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  atip: MyText
+  btip: MyText
+  champion: one
+
+two:
+  atip: MyText
+  btip: MyText
+  champion: two

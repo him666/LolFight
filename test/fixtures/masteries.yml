@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  game_num: 1
+  ranks: MyString
+  description: MyText
+  name: MyString
+  mastery_tree: MyText
+  modifier: MyString
+  mod_type: MyString
+
+two:
+  game_num: 1
+  ranks: MyString
+  description: MyText
+  name: MyString
+  mastery_tree: MyText
+  modifier: MyString
+  mod_type: MyString

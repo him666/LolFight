@@ -1,0 +1,2 @@
+class Mastery < ApplicationRecord
+end

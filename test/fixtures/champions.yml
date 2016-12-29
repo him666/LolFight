@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  game_num: 1
+  tags: MyText
+  stats: MyText
+  block_items: MyText
+  basic_dmg: MyString
+  passive: MyText
+  lore: MyText
+
+two:
+  game_num: 1
+  tags: MyText
+  stats: MyText
+  block_items: MyText
+  basic_dmg: MyString
+  passive: MyText
+  lore: MyText

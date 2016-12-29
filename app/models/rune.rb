@@ -1,0 +1,2 @@
+class Rune < ApplicationRecord
+end

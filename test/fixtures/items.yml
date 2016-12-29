@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  tags: MyText
+  game_num: 1
+  description: MyText
+  plaintext: MyText
+  stats: MyText
+  name: MyString
+  gold: 1
+  sell_price: 1
+
+two:
+  tags: MyText
+  game_num: 1
+  description: MyText
+  plaintext: MyText
+  stats: MyText
+  name: MyString
+  gold: 1
+  sell_price: 1

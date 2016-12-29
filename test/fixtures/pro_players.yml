@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  game_num: 1
+  tier: MyString
+  games: 1
+  most_played: MyString
+
+two:
+  game_num: 1
+  tier: MyString
+  games: 1
+  most_played: MyString

@@ -1,0 +1,2 @@
+class SumSpell < ApplicationRecord
+end
