@@ -4,6 +4,7 @@ require 'active_record'
 require 'open-uri'
 
 class Seeder
+  # analytics from seeds provided by lol api
   def get_seeds(url)
     JSON.load(open(url))
   end

@@ -8,11 +8,13 @@ class RuneGetter
   end
 
   def parse_rune(data)
+    name = data.second['name']
     game_num  = data.second['id']
     description = data.second['description']
     tier = data.second['rune']['tier']
     type2 = data.second['rune']['type']
-    { game_num: game_num, description: description, tier: tier, type2: type2 }
+    {name: name, game_num: game_num,
+     description: description, tier: tier, type2: type2 }
   end
 
   def save_rune(rune)
