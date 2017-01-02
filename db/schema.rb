@@ -13,6 +13,8 @@
 ActiveRecord::Schema.define(version: 20161229223558) do
 
   create_table "champions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name"
+    t.string   "title"
     t.integer  "game_num"
     t.text     "tags",        limit: 65535
     t.text     "stats",       limit: 65535
@@ -95,6 +97,7 @@ ActiveRecord::Schema.define(version: 20161229223558) do
     t.text     "cooldown",    limit: 65535
     t.text     "bonus_dmg",   limit: 65535
     t.string   "effect"
+    t.text     "description", limit: 65535
     t.integer  "champion_id"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false

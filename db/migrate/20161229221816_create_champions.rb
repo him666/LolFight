@@ -1,6 +1,8 @@
 class CreateChampions < ActiveRecord::Migration[5.0]
   def change
     create_table :champions do |t|
+      t.string :name
+      t.string :title
       t.integer :game_num
       t.text :tags
       t.text :stats

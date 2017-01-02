@@ -6,6 +6,7 @@ class CreateSpells < ActiveRecord::Migration[5.0]
       t.text :cooldown
       t.text :bonus_dmg
       t.string :effect
+      t.text :description
       t.references :champion, foreign_key: true
 
       t.timestamps
