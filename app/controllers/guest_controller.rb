@@ -1,38 +1,76 @@
 class GuestController < ApplicationController
-  def get_pro(champion)
-    r_url = 'http://lan.op.gg'
-    url = r_url + '/champion/statistics'
-    doc = Nokogiri::HTML(open(url))
-    links = doc.css('.Champion.Link').select do |champ|
-      !champ[:href].nil? && champ[:href].include?(champion)
+
+
+  def search
+
+  end
+
+  def player_history
+
+  end
+
+  def analytics_match
+
+  end
+
+
+  def current_match
+
+  end
+
+  private
+
+  def player_id(name)
+    url = "https://lan.api.pvp.net/api/lol/lan/v1.4/" +
+        "summoner/by-name/#{name}?api_key=#{ENV['LOL_KEY']}"
+    JSON.load(open(url))[name]['id']
+  end
+
+  def player_history_info(player_id)
+    url = "https://lan.api.pvp.net/api/lol/lan/v1.3/game/by-summoner/" +
+        "#{player_id}/recent?api_key=#{ENV['LOL_KEY']}"
+    JSON.load(open(url))['games'].map do |game|
+      match =  game['subType']
+      win =  game['stats']['win']
+      champion =  game['championId']
+      pos = game['stats']['playerPosition']
+      total_dmg = game['stats']['totalDamageDealtToChampions'] #damage done
+      total_gold =  game['stats']['goldEarned']
+      total_dmg_taken = game['stats']['totalDamageTaken']
+      level =  game['stats']['level']
+      kills =  game['stats']['championsKilled']
+      deaths =  game['stats']['numDeaths']
+      assists = game['stats']['assists']
+      wards =  game['stats']['wardPlaced']
+      cs =  game['stats']['minionsKilled']
+
+      { match: match, win: win, champion: champion, total_dmg: total_dmg,
+        total_gold: total_gold, dmg_taken: total_dmg_taken, level: level,
+        kills: kills, deaths: deaths, assists: assists, wards: wards, cs: cs,
+        position: pos }
     end
-    doc = Nokogiri::HTML(open(r_url + links.first[:href]))
-    doc.css('.Table .Cell')
+  end
+
+
+  def current_match_info(player_id)
+    url = "https://lan.api.pvp.net/observer-mode/rest/consumer/" +
+        "getSpectatorGameInfo/LA1/#{player_id}?api_key=#{ENV['LOL_KEY']}"
+    JSON.load(open(url))['games']
+  end
+
+  def pro_analytics(champion)
+    pro = ProPlayer.find_by_most_played(champion)
+    cs = ProPlayer.cs_prom(pro.id)
+    kills = ProPlayer.k_prom(pro.id)
+    deaths = ProPlayer.d_prom(pro.id)
+    assists = ProPlayer.a_prom(pro.id)
+    wards = ProPlayer.w_prom(pro.id)
+    {cs: cs, kills: kills, deaths: deaths, assists: assists, wards: wards}
   end
 
   def get_tips(player, enemy)
     url = "http://www.lolcounter.com/tips/#{enemy}/#{player}"
     doc = Nokogiri::HTML(open(url))
     doc.css('._tip')
-  end
-
-  def search
-
-  end
-
-  def match_history
-
-  end
-
-  def match_info
-
-  end
-
-  def training_advice
-
-  end
-
-  def current_match
-
   end
 end

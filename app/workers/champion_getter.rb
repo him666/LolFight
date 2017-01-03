@@ -42,7 +42,7 @@ class ChampionGetter
     c1 = Champion.create(champion)
     c1.tips << Tip.create(tips)
     spells.each do |spell|
-      c1.spells<< Spell.create(spell)
+      c1.spells << Spell.create(spell)
     end
   end
 
