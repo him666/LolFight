@@ -1,0 +1,43 @@
+<h1>Summoner <%= params[:sn].capitalize! %></h1>
+<h1>Listing Games Played</h1>
+
+<table>
+  <tr>
+    <th>Type</th>
+    <th>Won?</th>
+    <th>Champion</th>
+    <th>Total Damage</th>
+    <th>Gold</th>
+    <th>Damage Taken</th>
+    <th>level</th>
+    <th>Kills</th>
+    <th>Deaths</th>
+    <th>Assists</th>
+    <th>CS..</th>
+    <th>Wards</th>
+    <th>Position</th>
+    <th>Analytics</th>
+
+  </tr>
+
+  <% @matches.each do |match| %>
+      <tr>
+        <td><%= match[:match] %></td>
+        <td><%= match[:win] %></td>
+        <td><%= Champion.find_by_game_num(match[:champion]).name %></td>
+        <td><%= match[:total_dmg] %></td>
+        <td><%= match[:total_gold] %></td>
+        <td><%= match[:dmg_taken] %></td>
+        <td><%= match[:level] %></td>
+        <td><%= match[:kills] %></td>
+        <td><%= match[:deaths] %></td>
+        <td><%= match[:assists] %></td>
+        <td><%= match[:cs] %></td>
+        <td><%= match[:wards] %></td>
+        <td><%= match[:position] %></td>
+        <td><%= link_to 'Analytics', analytics_path(match)   %></td>
+      </tr>
+  <% end %>
+</table>
+
+<br>
