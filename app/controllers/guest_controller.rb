@@ -6,11 +6,11 @@ class GuestController < ApplicationController
   end
 
   def player_history
-
+  @matches = player_history_info(player_id(params[:sn]))
   end
 
   def analytics_match
-
+  @match = params[:match]
   end
 
 
@@ -21,9 +21,11 @@ class GuestController < ApplicationController
   private
 
   def player_id(name)
+    name2 = name.gsub(' ','%20')
+    name3 = name.tr(' ','')
     url = "https://lan.api.pvp.net/api/lol/lan/v1.4/" +
-        "summoner/by-name/#{name}?api_key=#{ENV['LOL_KEY']}"
-    JSON.load(open(url))[name]['id']
+        "summoner/by-name/#{name2}?api_key=#{ENV['LOL_KEY']}"
+    JSON.load(open(url))[name3]['id']
   end
 
   def player_history_info(player_id)
