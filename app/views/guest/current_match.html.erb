@@ -1,0 +1,19 @@
+<h1>current game</h1>
+<h1>Players</h1>
+<table>
+  <tr>
+    <th>Summoner</th>
+    <th>Team</th>
+    <th>Champion</th>
+
+  </tr>
+  <% @players.each do |player| %>
+      <tr>
+        <td><%= player[:sn] %></td>
+        <td><%= player[:team] %></td>
+        <td><%= Champion.find_by_game_num(player[:champion]).name %></td>
+
+      </tr>
+  <% end %>
+</table>
+

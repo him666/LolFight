@@ -1,6 +1,6 @@
 <h1>Summoner <%= params[:sn].capitalize! %></h1>
 <h1>Listing Games Played</h1>
-
+<%= link_to 'Current Game', current_path(params[:sn].downcase) %>
 <table>
   <tr>
     <th>Type</th>
@@ -17,9 +17,7 @@
     <th>Wards</th>
     <th>Position</th>
     <th>Analytics</th>
-
   </tr>
-
   <% @matches.each do |match| %>
       <tr>
         <td><%= match[:match] %></td>
@@ -35,9 +33,7 @@
         <td><%= match[:cs] %></td>
         <td><%= match[:wards] %></td>
         <td><%= match[:position] %></td>
-        <td><%= link_to 'Analytics', analytics_path(match)   %></td>
       </tr>
   <% end %>
 </table>
-
 <br>
