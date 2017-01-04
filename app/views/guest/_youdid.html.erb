@@ -1,0 +1,38 @@
+<h1><% timeline = @analytics[:timeline] %></h1>
+
+<table>
+  <tr>
+    <th>Timeline</th>
+    <th>Creeps Per Min</th>
+    <th>Xp per Min</th>
+    <th>Damage Taken per Min</th>
+  </tr>
+
+  <tr>
+    <td>zeroToTen</td>
+    <td><%= timeline['creepsPerMinDeltas']['zeroToTen'] %></td>
+    <td><%= timeline['xpPerMinDeltas']['zeroToTen'] %></td>
+    <td><%= timeline['goldPerMinDeltas']['zeroToTen'] %></td>
+
+  </tr>
+  <tr>
+    <td>tenToTwenty</td>
+    <td><%= timeline['creepsPerMinDeltas']['tenToTwenty'] %></td>
+    <td><%= timeline['xpPerMinDeltas']['tenToTwenty'] %></td>
+    <td><%= timeline['goldPerMinDeltas']['tenToTwenty'] %></td>
+  </tr>
+  <tr>
+    <td>twentyToThirty</td>
+    <td><%= timeline['creepsPerMinDeltas']['twentyToThirty'] %></td>
+    <td><%= timeline['xpPerMinDeltas']['twentyToThirty'] %></td>
+    <td><%= timeline['goldPerMinDeltas']['twentyToThirty'] %></td>
+  </tr>
+  <tr>
+    <td>thirtyToEnd</td>
+    <td><%= timeline['creepsPerMinDeltas']['thirtyToEnd'] %></td>
+    <td><%= timeline['xpPerMinDeltas']['thirtyToEnd'] %></td>
+    <td><%= timeline['goldPerMinDeltas']['thirtyToEnd'] %></td>
+  </tr>
+
+</table>
+<br>

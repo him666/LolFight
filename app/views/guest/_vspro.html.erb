@@ -1,0 +1,33 @@
+
+<h1><% stats = @analytics[:stats] %></h1>
+<table>
+  <tr>
+    <th>Player</th>
+    <th>Total Damage</th>
+    <th>Gold</th>
+    <th>Damage Taken</th>
+    <th>Kills</th>
+    <th>Deaths</th>
+    <th>Assists</th>
+    <th>CS..</th>
+    <th>Vision</th>
+
+  </tr>
+
+      <tr>
+
+        <td>You</td>
+        <td><%= stats['totalDamageDealtToChampions'] %></td>
+        <td><%= stats['goldEarned'] %></td>
+        <td><%= stats['totalDamageTaken'] %></td>
+        <td><%= stats['kills'] %></td>
+        <td><%= stats['deaths'] %></td>
+        <td><%= stats['assists'] %></td>
+        <td><%= stats['minionsKilled'] +
+                stats['neutralMinionsKilledTeamJungle'] +
+                stats['neutralMinionsKilledEnemyJungle'] %></td>
+        <td><%= stats['visionWardsBoughtInGame'] %></td>
+      </tr>
+
+</table>
+<br>

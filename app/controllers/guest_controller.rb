@@ -14,7 +14,9 @@ class GuestController < ApplicationController
 
   def analytics_match
     @match = params
+    @champ = Champion.find_by_game_num(@match[:champion]).name
     @analytics = match_analytics(@match)
+    @pro = GameStat.find_by_champion(@champ)
   end
 
 
@@ -42,8 +44,8 @@ class GuestController < ApplicationController
       match_id = match['matchId']
       role = match['role']
       lane = match['lane']
-      {champion: champion, queue: queue, match: match_id, role: role,
-       lane: lane, player: player_id}
+      { champion: champion, queue: queue, match: match_id, role: role,
+       lane: lane, player: player_id }
     end
   end
 
@@ -63,7 +65,7 @@ class GuestController < ApplicationController
     team_stats = info['teams'].select do |t|
       t['teamId'].equal?(team)
     end.first
-    {timeline: timeline, stats: stats, team_stats: team_stats}
+    { timeline: timeline, stats: stats, team_stats: team_stats }
   end
 
   def player_history_info(player_id)
@@ -85,10 +87,10 @@ class GuestController < ApplicationController
       cs = game['stats']['minionsKilled'].to_i +
           game['stats']['neutralMinionsKilled'].to_i
 
-      {match: match, win: win, champion: champion, total_dmg: total_dmg,
+      { match: match, win: win, champion: champion, total_dmg: total_dmg,
        total_gold: total_gold, dmg_taken: total_dmg_taken, level: level,
        kills: kills, deaths: deaths, assists: assists, wards: wards, cs: cs,
-       position: pos}
+       position: pos }
     end
   end
 
@@ -115,11 +117,13 @@ class GuestController < ApplicationController
   def pro_analytics(champion)
     pro = ProPlayer.find_by_most_played(champion)
     cs = ProPlayer.average(pro.id, 'minions')
+    max_cs = ProPlayer.max(pro.id, 'minions')
     kills = ProPlayer.average(pro.id, 'kills')
     deaths = ProPlayer.average(pro.id, 'deaths')
     assists = ProPlayer.average(pro.id, 'assists')
     vision = ProPlayer.average(pro.id, 'vision')
-    {cs: cs, kills: kills, deaths: deaths, assists: assists, vision: vision}
+    { cs: cs,max_cs: max_cs, kills: kills, deaths: deaths,
+     assists: assists, vision: vision }
   end
 
   def get_tips(player, enemy)

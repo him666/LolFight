@@ -1,0 +1,26 @@
+<h1><% stats =  @analytics[:team_stats] %></h1>
+
+<table>
+  <tr>
+    <th>Winner</th>
+    <th>Barons Killed</th>
+    <th>Dragons Killed</th>
+    <th>Rift Herals Killed</th>
+    <th>First Blood</th>
+    <th>First Tower</th>
+    <th>First Dragon</th>
+
+  </tr>
+
+      <tr>
+        <td><%= stats['winner'] %></td>
+        <td><%= stats['baronKills'] %></td>
+        <td><%= stats['dragonKills'] %></td>
+        <td><%= stats['riftHeraldKills'] %></td>
+        <td><%= stats['firstBlood'] %></td>
+        <td><%= stats['firstTower'] %></td>
+        <td><%= stats['firstDragon'] %></td>
+      </tr>
+
+</table>
+<br>

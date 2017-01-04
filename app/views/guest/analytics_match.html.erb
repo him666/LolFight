@@ -1,6 +1,14 @@
 <h1>Welcome to Match Analysis</h1>
-<h1>You played as
-  <%= Champion.find_by_game_num(@match[:champion]).name %>
-  In <%= @match[:lane] %> Lane</h1>
+<h1>You played as <%= @champ %> In <%= @match[:lane] %> Lane</h1>
+<h1> Basic info from Match.</h1>
+<%= render 'basic', locals: {team_stats: @analytics[:team_stats]} %>
+<br>
+<br>
 
-<h1><%= @analytics %></h1>
+<h1> How you did in Different parts of the match.</h1>
+<%= render 'youdid', locals: {timeline: @analytics[:timeline]} %>
+
+<br>
+<br>
+<h1> You Vs Pro Info</h1>
+<%= render 'vspro', locals: {stats: @analytics[:stats]}%>
