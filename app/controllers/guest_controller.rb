@@ -7,6 +7,9 @@ class GuestController < ApplicationController
 
   def player_history
     @matches = player_history_info(player_id(params[:sn]))
+    @ranked = player_matches(player_id(params[:sn]))
+
+
   end
 
   def analytics_match
@@ -38,6 +41,7 @@ class GuestController < ApplicationController
         match_id = match['matchId']
         role = match['role']
         lane = match['lane']
+      {champion: champion, queue: queue, match: match_id, role: role, lane: lane}
     end
   end
 

@@ -1,5 +1,6 @@
 <h1>Summoner <%= params[:sn].capitalize! %></h1>
 <h1>Listing Games Played</h1>
+<h2> this games cannot be analyzed, only ranked games</h2>
 <%= link_to 'Current Game', current_path(params[:sn].downcase) %>
 <table>
   <tr>
@@ -16,7 +17,6 @@
     <th>CS..</th>
     <th>Wards</th>
     <th>Position</th>
-    <th>Analytics</th>
   </tr>
   <% @matches.each do |match| %>
       <tr>
@@ -33,6 +33,27 @@
         <td><%= match[:cs] %></td>
         <td><%= match[:wards] %></td>
         <td><%= match[:position] %></td>
+      </tr>
+  <% end %>
+</table>
+<br>
+<h1>Only - Ranked Played Games</h1>
+<table>
+  <tr>
+    <th>Role</th>
+    <th>Lane</th>
+    <th>Champion</th>
+    <th>Queue</th>
+    <th>Full Analysis</th>
+
+  </tr>
+  <% @ranked.each do |rank| %>
+      <tr>
+        <td><%= rank[:role] %></td>
+        <td><%= rank[:lane] %></td>
+        <td><%= Champion.find_by_game_num(rank[:champion]).name %></td>
+        <td><%= rank[:queue] %></td>
+        <td><%= link_to 'Analytics', analytics_path(rank[:match])  %></td>
       </tr>
   <% end %>
 </table>
