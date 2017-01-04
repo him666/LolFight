@@ -1,3 +1,6 @@
 <h1>Welcome to Match Analysis</h1>
 <h1>You played as
-  <%= Champion.find_by_game_num(params[:champion]).name %></h1>
+  <%= Champion.find_by_game_num(@match[:champion]).name %>
+  In <%= @match[:lane] %> Lane</h1>
+
+<h1><%= @analytics %></h1>

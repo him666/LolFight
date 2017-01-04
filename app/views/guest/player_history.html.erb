@@ -53,7 +53,7 @@
         <td><%= rank[:lane] %></td>
         <td><%= Champion.find_by_game_num(rank[:champion]).name %></td>
         <td><%= rank[:queue] %></td>
-        <td><%= link_to 'Analytics', analytics_path(rank[:match])  %></td>
+        <td><%= link_to 'Analytics', analytics_path(rank)  %></td>
       </tr>
   <% end %>
 </table>

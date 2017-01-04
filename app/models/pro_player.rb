@@ -6,4 +6,7 @@ class ProPlayer < ApplicationRecord
   def self.average(id,column)
     ProPlayer.find(id).game_stats.average(column).to_i
   end
+  def self.max(id, column)
+    ProPlayer.find(id).game_stats.maximum(column).to_i
+  end
 end

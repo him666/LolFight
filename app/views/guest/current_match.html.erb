@@ -1,3 +1,4 @@
+<% if @players[:error].nil? %>
 <h1>current game</h1>
 <h1>Players</h1>
 <table>
@@ -16,4 +17,7 @@
       </tr>
   <% end %>
 </table>
-
+<% else %>
+    <h1><%= @players[:error] %></h1>
+    <%= link_to 'back',root_path %>
+<% end %>
