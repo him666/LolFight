@@ -128,7 +128,7 @@ class GuestController < ApplicationController
     doc.css('._tip')
   end
 
-  def champions_pool
+  def champions_pool # todo fix this to do eager load for views
     pool = {}
     Champion.all.map do |champion|
       pool["#{champion.game_num}"] = champion.name
