@@ -16,7 +16,8 @@ class GuestController < ApplicationController
     @match = params
     @champ = Champion.find_by_game_num(@match[:champion]).name
     @analytics = match_analytics(@match)
-    @pro = GameStat.find_by_champion(@champ)
+
+
   end
 
 
