@@ -16,15 +16,18 @@ class GuestController < ApplicationController
     @match = params
     @champ = Champion.find_by_game_num(@match[:champion]).name
     @analytics = match_analytics(@match)
-
-
   end
 
 
   def current_match
-    @players = current_match_info(player_id(params[:format]))
-    @player = params[:format]
-
+      @players = current_match_info(player_id(params[:format]))
+      @player = params[:format]
+      info = player_info(@player, @players)
+      @player_team = info[:team]
+      @enemies = against_champions(@players, @player_team)
+      @champion = Champion.find_by_game_num(info[:champion])
+      @lane_enemy = lane_enemy(@champion, @enemies)
+      @enemy_champions = enemy_champs(@enemies)
   end
 
   private
@@ -37,6 +40,20 @@ class GuestController < ApplicationController
     JSON.load(open(url))[name3]['id']
   end
 
+  def player_info(player, players)
+    players.select do |p|
+      p[:sn].downcase == player
+    end.first
+  end
+
+  def lane_enemy(champion, enemies)
+    enemies.select do |enemy|
+      Champion.find_by_game_num(enemy[:champion])
+          .lane
+          .equal?(champion.lane)
+    end
+  end
+
   def player_matches(player_id)
     url = "https://lan.api.pvp.net/api/lol/lan/v2.2/matchlist/by-summoner/" +
         "#{player_id}?api_key=#{ENV['LOL_KEY']}"
@@ -46,8 +63,8 @@ class GuestController < ApplicationController
       match_id = match['matchId']
       role = match['role']
       lane = match['lane']
-      { champion: champion, queue: queue, match: match_id, role: role,
-       lane: lane, player: player_id }
+      {champion: champion, queue: queue, match: match_id, role: role,
+       lane: lane, player: player_id}
     end
   end
 
@@ -67,7 +84,7 @@ class GuestController < ApplicationController
     team_stats = info['teams'].select do |t|
       t['teamId'].equal?(team)
     end.first
-    { timeline: timeline, stats: stats, team_stats: team_stats }
+    {timeline: timeline, stats: stats, team_stats: team_stats}
   end
 
   def player_history_info(player_id)
@@ -89,30 +106,36 @@ class GuestController < ApplicationController
       cs = game['stats']['minionsKilled'].to_i +
           game['stats']['neutralMinionsKilled'].to_i
 
-      { match: match, win: win, champion: champion, total_dmg: total_dmg,
+      {match: match, win: win, champion: champion, total_dmg: total_dmg,
        total_gold: total_gold, dmg_taken: total_dmg_taken, level: level,
        kills: kills, deaths: deaths, assists: assists, wards: wards, cs: cs,
-       position: pos }
+       position: pos}
+    end
+  end
+  def enemy_champs(enemies)
+    enemies.map do |e|
+      Champion.find_by_game_num(e[:champion])
     end
   end
 
+  def against_champions(players, player_team)
+    enemy = players.select do |p|
+      !p[:team].equal?(player_team)
+    end
+  end
 
   def current_match_info(player_id)
     url = "https://lan.api.pvp.net/observer-mode/rest/consumer/" +
         "getSpectatorGameInfo/LA1/#{player_id}?api_key=#{ENV['LOL_KEY']}"
-    begin
-      game_data = JSON.load(open(url))
-      game_data['bannedChampions']
-      game_data['gameType']
-      game_data['participants'].map do |participant|
-        sn = participant['summonerName']
-        champion = participant['championId']
-        sn_id = participant['summonerId']
-        team = participant['teamId']
-        {sn: sn, champion: champion, sn_id: sn_id, team: team}
-      end
-    rescue
-      {error: 'not in game'}
+    game_data = JSON.load(open(url))
+    game_data['bannedChampions']
+    game_data['gameType']
+    game_data['participants'].map do |participant|
+      sn = participant['summonerName']
+      champion = participant['championId']
+      sn_id = participant['summonerId']
+      team = participant['teamId']
+      {sn: sn, champion: champion, sn_id: sn_id, team: team}
     end
   end
 
@@ -124,8 +147,8 @@ class GuestController < ApplicationController
     deaths = ProPlayer.average(pro.id, 'deaths')
     assists = ProPlayer.average(pro.id, 'assists')
     vision = ProPlayer.average(pro.id, 'vision')
-    { cs: cs,max_cs: max_cs, kills: kills, deaths: deaths,
-     assists: assists, vision: vision }
+    {cs: cs, max_cs: max_cs, kills: kills, deaths: deaths,
+     assists: assists, vision: vision}
   end
 
   def get_tips(player, enemy)

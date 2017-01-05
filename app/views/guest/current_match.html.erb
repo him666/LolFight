@@ -2,8 +2,9 @@
 
 
     <h1>current game</h1>
-    <h1><%= @player %></h1>
-    <h1> <%= @players %></h1>
+    <h1><%= @player %> using <%= @champion.name %></h1>
+    <h1> <%= @enemy_champions  %></h1>
+    <h1>Lane Enemy <%= @lane_enemy  %> </h1>
 
 
 <%= link_to 'back',root_path %>
