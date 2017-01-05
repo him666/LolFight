@@ -1,10 +1,9 @@
+<h1>Current game</h1>
+<h1><%= @player %> using <%= @champion.name %></h1>
 
+<h1>Lane Enemy <%= @enemy.name %> </h1>
 
-
-    <h1>current game</h1>
-    <h1><%= @player %> using <%= @champion.name %></h1>
-    <h1> <%= @enemy_champions  %></h1>
-    <h1>Lane Enemy <%= @lane_enemy  %> </h1>
-
-
-<%= link_to 'back',root_path %>
+<%= render 'tips', locals: {tips: @tips} %>
+<br>
+<br>
+<%= link_to 'back', root_path %>

@@ -26,8 +26,11 @@ class GuestController < ApplicationController
       @player_team = info[:team]
       @enemies = against_champions(@players, @player_team)
       @champion = Champion.find_by_game_num(info[:champion])
-      @lane_enemy = lane_enemy(@champion, @enemies)
+      @lane_enemy = lane_enemy(@champion, @enemies).first
+      @enemy = Champion.find_by_game_num(@lane_enemy[:champion])
       @enemy_champions = enemy_champs(@enemies)
+      @tips_you = get_tips(@champion.name, @enemy.name)
+      @tips_vs = get_tips(@enemy.name, @enemy.name)
   end
 
   private
@@ -49,8 +52,7 @@ class GuestController < ApplicationController
   def lane_enemy(champion, enemies)
     enemies.select do |enemy|
       Champion.find_by_game_num(enemy[:champion])
-          .lane
-          .equal?(champion.lane)
+          .lane == champion.lane
     end
   end
 
