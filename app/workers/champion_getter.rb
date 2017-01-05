@@ -20,21 +20,29 @@ class ChampionGetter
     basic_dmg = stats['attackdamage']
     lore = data.second['lore']
     passive = data.second['passive']
-    { game_num: game_num, name: name, title: title, basic_dmg: basic_dmg,
-    tags: tags, stats: stats, lore: lore, passive: passive }
+    {game_num: game_num, name: name, title: title, basic_dmg: basic_dmg,
+     tags: tags, stats: stats, lore: lore, passive: passive}
   end
 
   def parse_tips_for_champion_data(data)
     enemytips = data.second['enemytips']
     allytips = data.second['allytips']
-    { atip: allytips, btip: enemytips }
+    {atip: allytips, btip: enemytips}
   end
 
   def parse_spells_for_champion_data(data)
     data.second['spells'].map do |spell|
-      { name: spell['name'], effect: spell['leveltip']['label'],
-      base_dmg: spell['effectBurn'], cooldown: spell['cooldownBurn'],
-      bonus_dmg: spell['vars'], description: spell['sanitizedTooltip'] }
+      {name: spell['name'], effect: spell['leveltip']['label'],
+       base_dmg: spell['effectBurn'], cooldown: spell['cooldownBurn'],
+       bonus_dmg: spell['vars'], description: spell['sanitizedTooltip']}
+    end
+  end
+
+  def parse_coeffs_for_spell(spell)
+    unless spell[:bonus_dmg].nil?
+      spell[:bonus_dmg].map do |coeffs|
+        {percent: coeffs['coeff']}
+      end
     end
   end
 
@@ -42,7 +50,14 @@ class ChampionGetter
     c1 = Champion.create(champion)
     c1.tips << Tip.create(tips)
     spells.each do |spell|
-      c1.spells << Spell.create(spell)
+      s1 = Spell.create(spell)
+      c1.spells << s1
+      coeffs = parse_coeffs_for_spell(spell)
+      unless coeffs.nil?
+        coeffs.each do |c|
+          s1.coefficients << Coefficient.create(c)
+        end
+      end
     end
   end
 
@@ -51,7 +66,8 @@ class ChampionGetter
       champion = parse_champions_data(data)
       spells = parse_spells_for_champion_data(data)
       tips = parse_tips_for_champion_data(data)
-      save_champion(champion, tips,spells)
+
+      save_champion(champion, tips, spells)
     end
   end
 end

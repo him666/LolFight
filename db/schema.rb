@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170105012039) do
+ActiveRecord::Schema.define(version: 20170105213411) do
 
   create_table "champions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
@@ -25,6 +25,14 @@ ActiveRecord::Schema.define(version: 20170105012039) do
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
     t.string   "lane"
+  end
+
+  create_table "coefficients", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "percent"
+    t.integer  "spell_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["spell_id"], name: "index_coefficients_on_spell_id", using: :btree
   end
 
   create_table "game_stats", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -126,6 +134,7 @@ ActiveRecord::Schema.define(version: 20170105012039) do
     t.index ["champion_id"], name: "index_tips_on_champion_id", using: :btree
   end
 
+  add_foreign_key "coefficients", "spells"
   add_foreign_key "game_stats", "pro_players"
   add_foreign_key "spells", "champions"
   add_foreign_key "tips", "champions"
