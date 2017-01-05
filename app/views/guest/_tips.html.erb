@@ -1,11 +1,16 @@
 <h2>Tips</h2>
 <div style="color:#000000">
   <h3> Tips for you</h3>
+  <p>
+    <%= @champion.tips.first.atip %>
+    <%= @enemy.tips.first.btip %>
   <% @tips_you.each do |tip| %>
-      <p><%= tip.text %></p>
+      <%= tip.text %></p>
   <% end %>
   <h3>Tips your enemy could try</h3>
+    <p><%= @champion.tips.first.btip %>
+      <%= @enemy.tips.first.atip %>
   <%= @tips_vs.each do |tip| %>
-     <p><%= tip.text %> </p>
+     <%= tip.text %> </p>
   <% end %>
 </div>

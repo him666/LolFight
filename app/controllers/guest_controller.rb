@@ -30,7 +30,7 @@ class GuestController < ApplicationController
       @enemy = Champion.find_by_game_num(@lane_enemy[:champion])
       @enemy_champions = enemy_champs(@enemies)
       @tips_you = get_tips(@champion.name, @enemy.name)
-      @tips_vs = get_tips(@enemy.name, @enemy.name)
+      @tips_vs = get_tips(@enemy.name, @champion.name)
   end
 
   private
