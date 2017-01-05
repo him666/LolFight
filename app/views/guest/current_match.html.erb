@@ -1,23 +1,9 @@
-<% if @players[:error].nil? %>
-<h1>current game</h1>
-<h1>Players</h1>
-<table>
-  <tr>
-    <th>Summoner</th>
-    <th>Team</th>
-    <th>Champion</th>
 
-  </tr>
-  <% @players.each do |player| %>
-      <tr>
-        <td><%= player[:sn] %></td>
-        <td><%= player[:team] %></td>
-        <td><%= Champion.find_by_game_num(player[:champion]).name %></td>
 
-      </tr>
-  <% end %>
-</table>
-<% else %>
-    <h1><%= @players[:error] %></h1>
-    <%= link_to 'back',root_path %>
-<% end %>
+
+    <h1>current game</h1>
+    <h1><%= @player %></h1>
+    <h1> <%= @players %></h1>
+
+
+<%= link_to 'back',root_path %>

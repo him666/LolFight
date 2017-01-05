@@ -23,6 +23,7 @@ class GuestController < ApplicationController
 
   def current_match
     @players = current_match_info(player_id(params[:format]))
+    @player = params[:format]
 
   end
 
