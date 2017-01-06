@@ -68,7 +68,7 @@ class ProHistoryGetter
   def run
     get_champions_link.each do |link|
       champion = link[:href].match(/champion\/([a-zA-Z]*)/)[1]
-      next if  ProPlayer.where(most_played: champion).count > 4
+      next if  ProPlayer.where(most_played: champion).count > 3
       pro_players = get_best_players(link[:href])
       pro_players.each do |player|
         data = get_player_data(player[:link], champion)

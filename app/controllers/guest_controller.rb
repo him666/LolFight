@@ -20,17 +20,26 @@ class GuestController < ApplicationController
 
 
   def current_match
-      @players = current_match_info(player_id(params[:format]))
-      @player = params[:format]
-      info = player_info(@player, @players)
-      @player_team = info[:team]
-      @enemies = against_champions(@players, @player_team)
-      @champion = Champion.find_by_game_num(info[:champion])
-      @lane_enemy = lane_enemy(@champion, @enemies).first
-      @enemy = Champion.find_by_game_num(@lane_enemy[:champion])
-      @enemy_champions = enemy_champs(@enemies)
-      @tips_you = get_tips(@champion.name, @enemy.name)
-      @tips_vs = get_tips(@enemy.name, @champion.name)
+    @players = current_match_info(player_id(params[:format]))
+    @player = params[:format]
+    info = player_info(@player, @players)
+    @player_team = info[:team]
+    @enemies = against_champions(@players, @player_team)
+    @allies = @players - @enemies
+    @champion = Champion.find_by_game_num(info[:champion])
+    @lane_enemy = lane_enemy(@champion, @enemies).first
+    @enemy = Champion.find_by_game_num(@lane_enemy[:champion])
+    @ally_champions = team_champs(@allies)
+    @enemy_champions = team_champs(@enemies)
+    @tips_you = get_tips(@champion.name, @enemy.name)
+    @tips_vs = get_tips(@enemy.name, @champion.name)
+    @allydmg_6 = dmg_per_team(@allies, 6)
+    @allydmg_11 = dmg_per_team(@allies, 11)
+    @allydmg_18 = dmg_per_team(@allies, 18)
+    @enemydmg_6 = dmg_per_team(@enemies, 6)
+    @enemydmg_11 = dmg_per_team(@enemies, 11)
+    @enemydmg_18 = dmg_per_team(@enemies, 18)
+    @items_advice
   end
 
   private
@@ -114,9 +123,11 @@ class GuestController < ApplicationController
        position: pos}
     end
   end
-  def enemy_champs(enemies)
-    enemies.map do |e|
+
+  def team_champs(players)
+    players.map do |e|
       Champion.find_by_game_num(e[:champion])
+
     end
   end
 
@@ -141,22 +152,61 @@ class GuestController < ApplicationController
     end
   end
 
-  def pro_analytics(champion)
-    pro = ProPlayer.find_by_most_played(champion)
-    cs = ProPlayer.average(pro.id, 'minions')
-    max_cs = ProPlayer.max(pro.id, 'minions')
-    kills = ProPlayer.average(pro.id, 'kills')
-    deaths = ProPlayer.average(pro.id, 'deaths')
-    assists = ProPlayer.average(pro.id, 'assists')
-    vision = ProPlayer.average(pro.id, 'vision')
-    {cs: cs, max_cs: max_cs, kills: kills, deaths: deaths,
-     assists: assists, vision: vision}
-  end
 
   def get_tips(player, enemy)
-    url = "http://www.lolcounter.com/tips/#{enemy}/#{player}"
+    url = "http://www.lolcounter.com/tips/#{enemy.gsub(' ', '%20')}/#{player.gsub(' ', '%20')}"
     doc = Nokogiri::HTML(open(url))
     doc.css('._tip')
+  end
+
+  def dmg_per_team(champions, level)
+    team_dmg = 0
+    champions.each do |champion|
+      c = Champion.find_by_game_num(champion[:champion])
+      team_dmg += dmg_per_champion(c, level)
+    end
+    team_dmg
+  end
+
+  def dmg_per_champion(champion, level)
+    if level == 6
+      dmg = 0
+      dmg += dmg_spell(champion.spells[0], 2)
+      dmg += dmg_spell(champion.spells[1], 2)
+      dmg += dmg_spell(champion.spells[2], 2)
+      dmg += dmg_spell(champion.spells[3], 1)
+
+    elsif level == 11
+      dmg = 0
+      dmg += dmg_spell(champion.spells[0], 3)
+      dmg += dmg_spell(champion.spells[1], 3)
+      dmg += dmg_spell(champion.spells[2], 3)
+      dmg += dmg_spell(champion.spells[3], 2)
+    else
+      dmg = 0
+      dmg += dmg_spell(champion.spells[0], 5)
+      dmg += dmg_spell(champion.spells[1], 5)
+      dmg += dmg_spell(champion.spells[2], 5)
+      dmg += dmg_spell(champion.spells[3], 3)
+    end
+    dmg
+  end
+
+  def dmg_spell(spell, level)
+    damage = 0
+    bonus_damage = 0
+    if spell.effect.include?('Daño')
+      damage = spell.base_dmg.split('/')[level-1].match(/([\d]+)/)[1].to_i
+      spell.coefficients.pluck(:percent).each do |percent|
+        bonus_damage += percent[1...-1].to_f * 100
+      end
+    else
+    end
+    if spell.coefficients.pluck(:percent).size.zero?
+      damage + bonus_damage / 1
+    else
+      damage + bonus_damage / spell.coefficients.pluck(:percent).length
+    end
   end
 
   def champions_pool # todo fix this to do eager load for views
