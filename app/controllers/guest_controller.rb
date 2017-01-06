@@ -57,7 +57,7 @@ class GuestController < ApplicationController
   def lane_enemy(champion, enemies)
     enemies.select do |enemy|
       Champion.find_by_game_num(enemy[:champion])
-          .lane == champion.lane
+          .lane.include?(champion.lane)
     end
   end
 

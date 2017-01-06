@@ -4,13 +4,13 @@
   <p>
     <%= @champion.tips.first.atip %>
     <%= @enemy.tips.first.btip %>
-  <% @tips_you.each do |tip| %>
-      <%= tip.text %></p>
-  <% end %>
+    <% @tips_you.each do |tip| %>
+        <%= tip.text %>
+    <% end %></p>
   <h3>Tips your enemy could try</h3>
-    <p><%= @champion.tips.first.btip %>
-      <%= @enemy.tips.first.atip %>
-  <%= @tips_vs.each do |tip| %>
-     <%= tip.text %> </p>
-  <% end %>
+  <p><%= @champion.tips.first.btip %>
+    <%= @enemy.tips.first.atip %>
+    <%= @tips_vs.each do |tip| %>
+        <%= tip.text %>
+    <% end %> </p>
 </div>
