@@ -35,7 +35,7 @@ class GuestController < ApplicationController
     @enemydmg_6 = dmg_per_team(@enemies, 6)
     @enemydmg_11 = dmg_per_team(@enemies, 11)
     @enemydmg_18 = dmg_per_team(@enemies, 18)
-    @items_advice
+    @items_advice = items_advice(@enemies)
   end
 
   private
@@ -204,24 +204,54 @@ class GuestController < ApplicationController
       damage + bonus_damage / spell.coefficients.pluck(:percent).length
     end
   end
-  def items_advice(enemies, role)
+
+  def items_advice(enemies)
     mages = 0
     tanks = 0
     assassins = 0
+    fighters = 0
+    marksmans = 0
     enemies.each do |enemy|
-      tags =   Champion.find_by_game_num(enemy[:champion]).tags
-      if tags.include?('Mage')
-        mages += 1
-        
-      end
+      tags = Champion.find_by_game_num(enemy[:champion]).tags
+      mages += 1 if tags.include?('Mage')
+      tanks += 1 if tags.include?('Tank')
+      assassins += 1 if tags.include?('Assassin')
+      fighters += 1 if tags.include?('Fighter')
+      marksmans += 1 if tags.include?('Marksman')
     end
-
-    {magic_res: 'build at least one MR item', dmg_res: 'build at least one armor item' }
+    advice = []
+    if mages > 2 && assassins > 1
+      advice[0] = 'Flat Armor and Flat Magic Resistance Build'
+      advice[1] = 'Life and Magic Resistance Weapons'
+      advice[2] = 'Magic Resistance Weapons and Magic Resistance'
+      advice[3] = 'One Magic Resistance and Clear CC Weapon at least'
+    elsif mages < 2 && tanks < 2
+      advice[0] = 'Full Flat Armor build'
+      advice[1] = 'FulL Damage Build'
+      advice[2] = 'Half Damage and Flat Armor Build'
+      advice[3] = 'Full Damage Build'
+    elsif tanks > 2
+      advice[0] = 'Full Flat Armor build'
+      advice[1] = 'FulL Lethality Build'
+      advice[2] = 'Half % of life Damage Weapons and Tank Build'
+      advice[3] = 'Full Lethality Build'
+    else
+      advice[0] = 'Recommended Build'
+      advice[1] = 'Recommended Build'
+      advice[2] = 'Recommended Build'
+      advice[3] = 'Recommended Build'
+    end
+    {top: advice[0], mid: advice[1], jungle: advice[2],
+     carry: advice[3], support: advice[0]}
   end
-  def champions_pool # todo fix this to do eager load for views
-    pool = {}
-    Champion.all.map do |champion|
-      pool["#{champion.game_num}"] = champion.name
-    end
+
+  {magic_res: 'build at least one MR item', dmg_res: 'build at least one armor item'}
+end
+
+def champions_pool # todo fix this to do eager load for views
+  pool = {}
+  Champion.all.map do |champion|
+    pool["#{champion.game_num}"] = champion.name
   end
 end
+
