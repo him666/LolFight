@@ -35,7 +35,7 @@ class GuestController < ApplicationController
     @enemydmg_6 = dmg_per_team(@enemies, 6)
     @enemydmg_11 = dmg_per_team(@enemies, 11)
     @enemydmg_18 = dmg_per_team(@enemies, 18)
-    @items_advice = items_advice(@enemies)
+    @item_tips = items_advice(@enemies)
   end
 
   private
