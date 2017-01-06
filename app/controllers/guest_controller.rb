@@ -1,15 +1,11 @@
 class GuestController < ApplicationController
-
-
   def search
-
   end
 
   def player_history
     @matches = player_history_info(player_id(params[:sn]))
     @ranked = player_matches(player_id(params[:sn]))
     @pool = champions_pool
-
   end
 
   def analytics_match
@@ -208,7 +204,20 @@ class GuestController < ApplicationController
       damage + bonus_damage / spell.coefficients.pluck(:percent).length
     end
   end
+  def items_advice(enemies, role)
+    mages = 0
+    tanks = 0
+    assassins = 0
+    enemies.each do |enemy|
+      tags =   Champion.find_by_game_num(enemy[:champion]).tags
+      if tags.include?('Mage')
+        mages += 1
+        
+      end
+    end
 
+    {magic_res: 'build at least one MR item', dmg_res: 'build at least one armor item' }
+  end
   def champions_pool # todo fix this to do eager load for views
     pool = {}
     Champion.all.map do |champion|
