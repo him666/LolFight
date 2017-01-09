@@ -1,9 +1,14 @@
 <h1>Summoner <%= params[:sn].capitalize! %></h1>
-<h1>Listing Games Played</h1>
-<h2> this games cannot be analyzed, only ranked games</h2>
 <div class="col-sm-6 col-md-5">
+  <div class="alert-link">
+  <%= link_to 'Search again', root_path %>
   <%= link_to 'Current Game', current_path(params[:sn].downcase) %>
+  </div>
+
 </div>
+<br>
+<h1>Listing Games Played</h1>
+<p> these games cannot be analyzed, only ranked games</p>
 <table class="rwd-table">
   <tr>
     <th>Type</th>

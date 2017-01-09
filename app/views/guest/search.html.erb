@@ -1,7 +1,8 @@
 <h1 class=""> Bienvenido busca por nombre de invocador</h1>
-   <h3> por ahora solo soportamos LAN</h3>
+   <p> por ahora solo soportamos LAN</p>
 
 <%= form_tag(history_path, method: :get) %>
-<%= label_tag :sn %><br>
+
 <%= text_field_tag :sn %><br><br>
-<%= submit_tag 'Search Summoner!' %>
+
+<%= submit_tag 'Search Summoner!', class: "btn" %>

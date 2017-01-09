@@ -1,7 +1,12 @@
+<div class="col-sm-6 col-md-5">
+  <div class="alert-link">
+    <%= link_to 'Search again', root_path %>
+  </div>
+</div>
 <h1>Current game</h1>
-<h1><%= @player %> using <%= @champion.name %></h1>
+<p><%= @player %> using <%= @champion.name %></p>
 
-<h1>Lane Enemy <%= @enemy.name %> </h1>
+<p>Lane Enemy <%= @enemy.name %> </p>
 
 <%= render 'tips' %>
 <br>
@@ -12,5 +17,8 @@
 <%= render 'itemtips' %>
 <br>
 <br>
-
-<%= link_to 'back', root_path %>
+<div class="col-sm-6 col-md-5">
+  <div class="alert-link">
+    <%= link_to 'back', root_path %>
+  </div>
+</div>

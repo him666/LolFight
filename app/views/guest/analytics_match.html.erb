@@ -1,5 +1,11 @@
+<div class="col-sm-6 col-md-5">
+  <div class="alert-link">
+
+    <%= link_to 'Search again', root_path %>
+  </div>
+</div>
 <h1>Welcome to Match Analysis</h1>
-<h1>You played as <%= @champ %> In <%= @match[:lane] %> Lane</h1>
+<p>You played as <%= @champ %> In <%= @match[:lane] %> Lane</p>
 <h1> Basic info from Match.</h1>
 <%= render 'basic', locals: {team_stats: @analytics[:team_stats]} %>
 <br>
@@ -11,4 +17,4 @@
 <br>
 <br>
 <h1> You Vs Pro Info</h1>
-<%= render 'vspro', locals: {stats: @analytics[:stats]}%>
+<%= render 'vspro', locals: {stats: @analytics[:stats]} %>
