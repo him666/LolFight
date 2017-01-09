@@ -1,8 +1,10 @@
 <h1>Summoner <%= params[:sn].capitalize! %></h1>
 <h1>Listing Games Played</h1>
 <h2> this games cannot be analyzed, only ranked games</h2>
-<%= link_to 'Current Game', current_path(params[:sn].downcase) %>
-<table>
+<div class="col-sm-6 col-md-5">
+  <%= link_to 'Current Game', current_path(params[:sn].downcase) %>
+</div>
+<table class="rwd-table">
   <tr>
     <th>Type</th>
     <th>Won?</th>
@@ -22,7 +24,7 @@
       <tr>
         <td><%= match[:match] %></td>
         <td><%= match[:win] %></td>
-        <td><%= Champion.find_by_game_num(match[:champion]).name %></td>
+        <td><%= @pool[:"#{match[:champion]}"] %></td>
         <td><%= match[:total_dmg] %></td>
         <td><%= match[:total_gold] %></td>
         <td><%= match[:dmg_taken] %></td>
@@ -38,23 +40,27 @@
 </table>
 <br>
 <h1>Only - Ranked Played Games</h1>
-<table>
-  <tr>
-    <th>Role</th>
-    <th>Lane</th>
-    <th>Champion</th>
-    <th>Queue</th>
-    <th>Full Analysis</th>
 
-  </tr>
-  <% @ranked.each do |rank| %>
-      <tr>
-        <td><%= rank[:role] %></td>
-        <td><%= rank[:lane] %></td>
-        <td><%= Champion.find_by_game_num(rank[:champion]).name %></td>
-        <td><%= rank[:queue] %></td>
-        <td><%= link_to 'Analytics', analytics_path(rank)  %></td>
-      </tr>
-  <% end %>
-</table>
+  <table class="rwd-table">
+    <tr>
+      <th>Role</th>
+      <th>Lane</th>
+      <th>Champion</th>
+      <th>Queue</th>
+      <th>Full Analysis</th>
+
+    </tr>
+    <% @ranked.each do |rank| %>
+        <div class='row'>
+          <tr>
+            <td><%= rank[:role] %></td>
+            <td><%= rank[:lane] %></td>
+            <td><%= @pool[:"#{rank[:champion]}"] %></td>
+            <td><%= rank[:queue] %></td>
+            <td><%= link_to 'Analytics', analytics_path(rank) %></td>
+          </tr>
+        </div>
+    <% end %>
+  </table>
+
 <br>

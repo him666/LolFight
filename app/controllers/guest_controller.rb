@@ -248,10 +248,9 @@ class GuestController < ApplicationController
   {magic_res: 'build at least one MR item', dmg_res: 'build at least one armor item'}
 end
 
-def champions_pool # todo fix this to do eager load for views
-  pool = {}
+def champions_pool
   Champion.all.map do |champion|
-    pool["#{champion.game_num}"] = champion.name
-  end
+    {"#{champion.game_num}":  champion.name}
+  end.reduce({}, :update)
 end
 
