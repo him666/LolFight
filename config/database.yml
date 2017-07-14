@@ -49,6 +49,6 @@ test:
 #
 production:
   <<: *default
-  database: LolFight_production
-  username: LolFight
-  password: <%= ENV['LOLFIGHT_DATABASE_PASSWORD'] %>
+  database: heroku_77d125a268d5783
+  username: <%= ENV['DB_USER_DEV'] %>
+  password: <%= ENV['DB_PASSWORD_DEV'] %>
